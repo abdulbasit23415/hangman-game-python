@@ -1,5 +1,3 @@
-Sure, here's a readme file for the given Hangman game code:
-
 # Hangman Game
 
 Welcome to the Hangman game, a simple text-based implementation of the classic Hangman game in Python.
