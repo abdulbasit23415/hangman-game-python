@@ -59,8 +59,5 @@ You can customize the list of words in the `word_list` variable inside the `Hang
 
 If you would like to contribute to the project, feel free to submit pull requests or open issues.
 
-## License
-
-This project is licensed under the MIT License. See the LICENSE file for more details.
 
 Enjoy the game and have fun playing Hangman! 🎮
