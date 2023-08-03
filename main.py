@@ -54,7 +54,7 @@ class Hangman():
                 self.score += 10
         else:
             self.lives -= 1
-            self.display_hangman(self.lives)
+            print("\t\t\t\t",self.display_hangman(self.lives))
         self.qwerty.remove(char)
         return ind
     def user_input(self):
@@ -62,7 +62,7 @@ class Hangman():
         resp = self.checker(word)
         self.layout(resp,word)
 
-    def display_hangman(lives):
+    def display_hangman(self,lives):
         stages = [  # final state: head, torso, both arms, and both legs
                     """
                     --------
@@ -134,6 +134,7 @@ class Hangman():
                     -
                     """
         ]
+        return stages[lives]
     
     def announce(self):
         if self.stored == self.splitted:
