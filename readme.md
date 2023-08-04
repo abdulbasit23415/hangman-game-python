@@ -23,10 +23,10 @@ pip install pygame
 
 ## How to Play
 
-1. Run the game by executing the `hangman.py` file:
+1. Run the game by executing the `main.py` file:
 
 ```
-python hangman.py
+python main.py
 ```
 
 2. When the game starts, it will display the Hangman figure with some dashes representing the letters of the word to be guessed.
