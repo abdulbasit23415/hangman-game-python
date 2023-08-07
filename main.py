@@ -70,6 +70,8 @@ class Hangman():
                     os.system("cls")
                     self.stored = list()
                     self.dash = self.dashDash(self.word_length)
+                    self.score = 0
+                    self.lives = 7
                     self.qwerty = ['q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p',
             'a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l','z', 'x', 'c', 'v', 'b', 'n', 'm']
             else:
