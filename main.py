@@ -3,16 +3,36 @@ class Hangman():
     def __init__(self):
         pygame.init()
         pygame.mixer.init()
+        self.word_length = 0
+        self.level = 1
+        self.word_list= self.getWordList()
         self.score = 0
         self.lives = 7
         self.catagory=""
         self.word=""
         self.splitted = list()
         self.stored = list()
-        self.dash = ['_','_','_','_']
         self.qwerty = ['q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p',
     'a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l','z', 'x', 'c', 'v', 'b', 'n', 'm']
-        self.word_list=[("food","cake"),("place","park"),("animals","lion"),("celestial","star"),("transportation","ship"),("sports","ball"),("celestial","moon"),("weather","rain"),("aquatic","fish"),("nature","tree")]
+        
+    def initializer(self):
+        self.word_list= self.getWordList()
+        self.get_random_words()
+
+    def dashDash(self,word):
+        dashList = list()
+        for dash in range(word):
+            dashList.append("_")
+        return dashList
+    def getWordList(self):
+        wordList = []
+        f = open(f"levels/level{self.level}.csv","r")
+        for data in f:
+            words = data.strip().split(',')
+            if len(words) == 2:
+                wordList.append((words[0],words[1]))
+        return wordList
+        
     # Greetings function
     def greetings(self):
         print("Welcome to the hangman game")
@@ -25,36 +45,53 @@ class Hangman():
     
     #Picking random words from the List of Tuples
     def get_random_words(self):
+        king_fisher = None
         while True:     #This loop will run to generate random words
-            number = random.randint(0,9)
+            number = random.randint(0,len(self.word_list)-1)
             self.catagory,self.word=self.word_list[number]  #Storing the category and the word in their respective variables
             self.splitted = list(self.word) #Splitting the word
+            self.dash = self.dashDash(len(self.word))
             self.layout("","")      #Layout here will also get called in a loop
             while True: #Main Loop
                 option = None       #option is declared here so, we can access its value inside elif self.lives
                 if len(self.stored) == len(self.splitted):
                     break
                 elif self.lives == 0:
-                    option = input("Do you want to try again? (y/n) ")
-                    if option == "n":
-                        break
+                    break
                 self.user_input()
-            if option == "n":
-                #The game will announce the result and exit
+            if self.lives == 0:
                 self.announce()
-                break
+                option = input("Do you want to try again? (y/n) ")
+                if option == "n":
+                #The game will announce the result and exit
+                    break
+                else:
+                    #The game will continue
+                    os.system("cls")
+                    self.stored = list()
+                    self.dash = self.dashDash(self.word_length)
+                    self.qwerty = ['q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p',
+            'a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l','z', 'x', 'c', 'v', 'b', 'n', 'm']
             else:
+                if self.lives < 7:
+                    self.lives += 1
                 #The game will continue
                 os.system("cls")
                 self.stored = list()
                 self.dash = ['_','_','_','_']
                 self.qwerty = ['q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p',
         'a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l','z', 'x', 'c', 'v', 'b', 'n', 'm']
+            if self.score == 120:
+                king_fisher = 1
+                break
+        if king_fisher:
+            self.level += 1
+            self.initializer()
 
     
     #Repeating Layout 
     def layout(self,index,word):
-        print(f"\n {self.catagory}\t\tScore:{self.score}\t\tLives:{self.lives}\n") #Displaying score and lives
+        print(f"\n {self.catagory}\t\tScore:{self.score}\t\tLives:{self.lives}\t\tLevel:{self.level}\n") #Displaying score and lives
         if word in self.splitted:
             #Popping the dashes from the specified index and adding the word at that index
             for i in index:
@@ -172,14 +209,15 @@ class Hangman():
     
     #Announcing the final results
     def announce(self):
-        if self.stored == self.splitted:
-            print("\nYEAH! You WON!")
+        if self.score > 120:
+            print("\nThe word was: ",self.word)
+            print("\nYEAH! You played very well!")
             self.play_sound("music/Success2.wav")
             print(f"Your score is: {self.score}")
 
         else:
             self.play_sound("music/Fail.wav")
-            print("The word was: ",self.word)
+            print("\nThe word was: ",self.word)
             print("\nBetter luck next time :(") 
           
 #Main
