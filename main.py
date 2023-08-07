@@ -25,26 +25,32 @@ class Hangman():
     
     #Picking random words from the List of Tuples
     def get_random_words(self):
-        number = random.randint(0,9)
-        self.catagory,self.word=self.word_list[number]  #Storing the category and the word in their respective variables
-        self.splitted = list(self.word) #Splitting the word
-        print(f"\n {self.catagory}\t\tScore:{self.score}\t\tLives:{self.lives}\n") #Displaying score and lives
-        #Printing the dash list
-        for dash in self.dash:
-                print(dash,end=" ")
-        print("\n")
-        for char in self.qwerty: #Displaying the keyboard here
-            print(char,end=" ")
-            if char == "p" or char == "l" or char == "m":
-                print("\n")
-        
-        while True: #Main Loop
-            if len(self.stored) == len(self.splitted):
+        while True:     #This loop will run to generate random words
+            number = random.randint(0,9)
+            self.catagory,self.word=self.word_list[number]  #Storing the category and the word in their respective variables
+            self.splitted = list(self.word) #Splitting the word
+            self.layout("","")      #Layout here will also get called in a loop
+            while True: #Main Loop
+                option = None       #option is declared here so, we can access its value inside elif self.lives
+                if len(self.stored) == len(self.splitted):
+                    break
+                elif self.lives == 0:
+                    option = input("Do you want to try again? (y/n) ")
+                    if option == "n":
+                        break
+                self.user_input()
+            if option == "n":
+                #The game will announce the result and exit
+                self.announce()
                 break
-            elif self.lives == 0:
-                break
-            self.user_input()
-        self.announce()
+            else:
+                #The game will continue
+                os.system("cls")
+                self.stored = list()
+                self.dash = ['_','_','_','_']
+                self.qwerty = ['q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p',
+        'a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l','z', 'x', 'c', 'v', 'b', 'n', 'm']
+
     
     #Repeating Layout 
     def layout(self,index,word):
